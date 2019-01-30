@@ -1,7 +1,7 @@
 require("dotenv").config();
 var express = require("express");
 var exphbs = require("express-handlebars");
-
+const socketio = require("socket.io")
 var db = require("./models");
 
 var app = express();
@@ -42,6 +42,16 @@ db.sequelize.sync(syncOptions).then(function() {
       PORT
     );
   });
+
+  const io = socketio(app);
+
+  io.on("connection", (sock)=>{
+    console.log("a user has connected to the server via Socket.io")
+    sock.emit("message", "Hi You are connected")
+
+
+  })
+
 });
 
 module.exports = app;
