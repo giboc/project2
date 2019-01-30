@@ -1,17 +1,18 @@
 require("dotenv").config();
 var express = require("express");
 var exphbs = require("express-handlebars");
-const socketio = require("socket.io")
+const socketio = require("socket.io");
 var db = require("./models");
-
+const http = require("http");
 var app = express();
 var PORT = process.env.PORT || 3000;
+const server = http.createServer(app);
+const io = require("socket.io").listen(server);
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
-
 // Handlebars
 app.engine(
   "handlebars",
@@ -41,17 +42,12 @@ db.sequelize.sync(syncOptions).then(function() {
       PORT,
       PORT
     );
+
+    io.sockets.on("connection", sock => {
+      console.log("a user has connected to the server via Socket.io");
+      sock.emit("message", "Hi You are connected");
+    });
   });
-
-  const io = socketio(app);
-
-  io.on("connection", (sock)=>{
-    console.log("a user has connected to the server via Socket.io")
-    sock.emit("message", "Hi You are connected")
-
-
-  })
-
 });
 
 module.exports = app;
