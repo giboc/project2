@@ -98,17 +98,13 @@ var handleDeleteBtnClick = function() {
 $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
-const sock = io( function(){
+const sock = io();
 
-  var writeEvent = function(text) {
-    var parent = document.querySelector("#connectionlog");
-    var child = document.createElement("div");
-    child.innerHTML(text);
-    parent.appendChild(child);
+var writeEvent = function(text) {
+  var parent = document.querySelector("#connectionlog");
+  var child = document.createElement("div");
+  child.innerHTML(text);
+  parent.appendChild(child);
+};
 
-  writeEvent("Connected via Socket.io");
-
-
-});
-sock();
-
+writeEvent("Connected via Socket.io");
