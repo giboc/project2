@@ -97,14 +97,3 @@ var handleDeleteBtnClick = function() {
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
-
-const sock = io();
-
-var writeEvent = function(text) {
-  var parent = document.querySelector("#connectionlog");
-  var child = document.createElement("div");
-  child.innerHTML(text);
-  parent.appendChild(child);
-};
-
-writeEvent("Connected via Socket.io");
