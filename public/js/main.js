@@ -3,6 +3,8 @@ var $firstName = $("#first-name");
 var $lastName = $("#last-name");
 var $email = $("#email");
 var $password = $("#password");
+var $loginEmail = $("#loginEmail");
+var $loginPassword = $("#loginPassword");
 
 // The API object contains methods for each kind of request we"ll make
 var API = {
@@ -16,10 +18,14 @@ var API = {
       data: JSON.stringify(player)
     });
   },
-  getUser: function() {
+  login: function(playerLogin) {
     return $.ajax({
-      url: "api/getPlayers",
-      type: "GET"
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "POST",
+      url: "api/login",
+      data: JSON.stringify(playerLogin)
     });
   },
   deleteUser: function(id) {
@@ -30,14 +36,11 @@ var API = {
   }
 };
 
-// //Function to handle player creation.
+//Function to handle player creation.
 var createPlayer = function (event) {
-
-  //event.preventDefault();
-  
+  console.log("create test");
   if ($firstName.val() && $lastName.val() && $email.val() && $password.val()){
     event.preventDefault();
-    console.log("???");
     var player = {
       firstName: $firstName.val().trim(),
       lastName: $lastName.val().trim(),
@@ -51,7 +54,23 @@ var createPlayer = function (event) {
     return;
 };
 
+//Function to handle login
+var login = function(event){
+  console.log("login test");
+  if ($loginEmail.val() && $loginPassword.val()){
+    event.preventDefault();
+    var input = {
+      email: $loginEmail.val().trim(),
+      password: $loginPassword.val().trim()
+    };
+    API.login(input);
+  }
+  else
+    return;
+}
+
 $("#createUser").on("click", createPlayer);
+$("#login").on("click", login);
 
 $(".form").find("input, textarea").on("keyup blur focus", function (e) {
   var $this = $(this),
