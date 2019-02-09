@@ -76,3 +76,16 @@ function createCorrectAnswersArray(currentQuestionBank) {
 //for each question place correct answer in array with corresponding index
 
 //place questions in array with both correct and incorrect answers and randomize them
+
+//map trivia categories
+
+axios.get("https://opentdb.com/api_category.php").then(function(response) {
+  //   console.log(response.data.trivia_categories);
+  var categories = response.data.trivia_categories;
+
+  for (i = 0; i < categories.length; i++) {
+    console.log(
+      `ID IS ${categories[i].id} category name is ${categories[i].name} \n`
+    );
+  }
+});
