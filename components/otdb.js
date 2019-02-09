@@ -1,5 +1,5 @@
 var axios = require("axios");
-
+var category_url = "";
 var questionBank;
 var correctAnswerArray = [];
 var formattedQuestionBank = [];
@@ -47,15 +47,15 @@ function questionReformat(questionBank) {
 }
 
 function createCorrectAnswersArray(currentQuestionBank) {
-  for (i = 0; i < currentQuestionBank.length; i++) {
-    correctAnswerArray.push(currentQuestionBank[i].correct_answer);
+  for (i = 0; i < questionBank.length; i++) {
+    correctAnswerArray.push(questionBank[i].correct_answer);
   }
 
   //   console.log(correctAnswerArray);
 }
 
 axios
-  .get("https://opentdb.com/api.php?amount=10&type=multiple")
+  .get("https://opentdb.com/api.php?amount=10&category=15&type=multiple")
   .then(function(response) {
     // log the actual response
     console.log(response.data.results);
@@ -73,10 +73,10 @@ axios
     console.log(err);
   });
 
-// createCorrectAnswersArray(currentQuestionBank);
-// console.log(currentQuestionBank);
+// createCorrectAnswersArray(questionBank);
+// console.log(questionBank);
 
-// questionReformat(currentQuestionBank);
+// questionReformat(questionBank);
 // console.log(formattedQuestionBank + "formatted");
 
 // pull current bank of question
@@ -90,7 +90,6 @@ axios
 axios.get("https://opentdb.com/api_category.php").then(function(response) {
   //   console.log(response.data.trivia_categories);
   var categories = response.data.trivia_categories;
-  var category_url = " ";
 
   for (i = 0; i < categories.length; i++) {
     category_url = `https://opentdb.com/api.php?amount=10&category=${
