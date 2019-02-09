@@ -1,24 +1,8 @@
 var axios = require("axios");
 
-var currentQuestionBank = [];
+var questionBank;
 var correctAnswerArray = [];
 var formattedQuestionBank = [];
-
-axios
-  .get("https://opentdb.com/api.php?amount=10&type=multiple")
-  .then(function(response) {
-    // log the actual response
-    console.log(response.data.results);
-
-    //assign current question bank into its own variable
-    currentQuestionBank = response.data.results;
-
-    createCorrectAnswersArray(currentQuestionBank);
-
-    console.log(correctAnswerArray);
-
-    // questionReformat(currentQuestionBank);
-  });
 
 //found knuth shuffle algorithm here https://github.com/coolaj86/knuth-shuffle
 
@@ -43,16 +27,21 @@ function shuffle(array) {
 }
 
 function newQuestionArray(incorrect_answers, correct_answer) {
-  for (i = 0; i < incorrect_answers.length; i++) {
-    formattedQuestionBank.push(incorrect_answers[i]);
+  for (i = 0; i < questionBank.length; i++) {
+    console.log(
+      "\n" + formattedQuestionBank + "\n HERE IS THE FORMATTED QUESTION BANK \n"
+    );
+    for (x = 0; x < questionBank[i].incorrect_answers.length; x++) {
+      formattedQuestionBank[i].push(questionbank[i].incorrect_answers[x]);
+    }
+    formattedQuestionBank[i].push(questionbank[i].correct_answer);
   }
-  formattedQuestionBank.push(correct_answer[0]);
 }
-function questionReformat(currentQuestionBank) {
-  for (i = 0; i < currentQuestionBank.length; i++) {
+function questionReformat(questionBank) {
+  for (i = 0; i < questionBank.length; i++) {
     newQuestionArray(
-      currentQuestionBank[i].incorrect_answers,
-      currentQuestionBank[i].correct_answer
+      questionBank[i].incorrect_answers,
+      questionBank[i].correct_answer
     );
   }
 }
@@ -64,6 +53,25 @@ function createCorrectAnswersArray(currentQuestionBank) {
 
   //   console.log(correctAnswerArray);
 }
+
+axios
+  .get("https://opentdb.com/api.php?amount=10&type=multiple")
+  .then(function(response) {
+    // log the actual response
+    console.log(response.data.results);
+
+    //assign current question bank into its own variable
+    questionBank = response.data.results;
+
+    createCorrectAnswersArray(questionBank);
+
+    console.log(correctAnswerArray);
+
+    questionReformat(questionBank);
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
 
 // createCorrectAnswersArray(currentQuestionBank);
 // console.log(currentQuestionBank);
@@ -82,10 +90,18 @@ function createCorrectAnswersArray(currentQuestionBank) {
 axios.get("https://opentdb.com/api_category.php").then(function(response) {
   //   console.log(response.data.trivia_categories);
   var categories = response.data.trivia_categories;
+  var category_url = " ";
 
   for (i = 0; i < categories.length; i++) {
+    category_url = `https://opentdb.com/api.php?amount=10&category=${
+      categories[i].id
+    }`;
     console.log(
-      `ID IS ${categories[i].id} category name is ${categories[i].name} \n`
+      `
+      CURRENT CATEGORY OBJECT INDEX IS: ${i}
+      ID IS ${categories[i].id} category name is ${categories[i].name}
+      THE API FOR 10 QUESTIONS WITH ${categories[i].name} AS A CATEGORY IS:
+     ${category_url} `
     );
   }
 });
