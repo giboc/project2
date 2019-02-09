@@ -47,6 +47,7 @@ db.sequelize.sync(syncOptions).then(function() {
     io.sockets.on("connection", sock => {
       console.log("a user has connected to the server via Socket.io");
       sock.emit("message", "Hi You are connected");
+
     });
   });
 });

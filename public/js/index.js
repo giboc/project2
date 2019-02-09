@@ -1,8 +1,13 @@
 // Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+var $firstName = $("#first-name");
+var $lastName = $("#last-name");
+var $email = $("#email");
+var $password = $("#password");
+
+// var $exampleText = $("#example-text");
+// var $exampleDescription = $("#example-description");
+var $submitBtn = $("#createUser");
+// var $exampleList = $("#example-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -64,17 +69,24 @@ var refreshExamples = function() {
 var handleFormSubmit = function(event) {
   event.preventDefault();
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
+  var user = {
+    firstName: $firstName.val().trim(),
+    lastName: $lastName.val().trim(),
+    email: $email.val().trim(),
+    password: $password.val().trim()
   };
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
 
-  API.saveExample(example).then(function() {
+
+
+  
+
+  // if (!(user.firstName && user.lastName && user.email && user.password)) {
+  //   alert("You must enter an example text and description!");
+  //   return;
+  // }
+
+  API.saveExample(user).then(function() {
     refreshExamples();
   });
 
@@ -96,4 +108,4 @@ var handleDeleteBtnClick = function() {
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+// $exampleList.on("click", ".delete", handleDeleteBtnClick);
